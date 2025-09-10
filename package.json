@@ -1,0 +1,18 @@
+{
+  "name": "app-finance-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "@eslint/json": "^0.13.2",
+    "eslint": "8.46.0",
+    "prettier": "3.6.2"
+  }
+}
