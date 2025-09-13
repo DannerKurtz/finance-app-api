@@ -1,5 +1,5 @@
 
-import { bcrypt } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { PostgresCreateUserRepository } from './../repositories/postgres/create-user.js';
 
