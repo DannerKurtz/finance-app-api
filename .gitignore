@@ -2,3 +2,4 @@ node_modules
 .postgres
 postgres_data
 .env
+.vscode
