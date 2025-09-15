@@ -1,6 +1,6 @@
 import validator from 'validator';
 import { CreateUserUseCase } from "../use-cases/create-user.js";
-import { badRequest, createdRequest, internalServer } from './helpers.js';
+import { badRequest, created, internalServer } from './helpers.js';
 
 export class CreateUserController{
   async execute(httpRequest) {
@@ -32,7 +32,7 @@ export class CreateUserController{
     const createdUser = await createUserUseCase.execute(params);
 
     // retornar a resposta
-    return createdRequest({createdUser});
+    return created({createdUser});
   
    } catch (error) {
     console.error(error);
