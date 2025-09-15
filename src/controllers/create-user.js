@@ -1,6 +1,5 @@
+import validator from 'validator';
 import { CreateUserUseCase } from "../use-cases/create-user.js";
-
-
 export class CreateUserController{
   async execute(httpRequest) {
    try {
@@ -8,11 +7,33 @@ export class CreateUserController{
 
     // validar a requisição (campos obrigatórios)
     const requiredFields = ['firstName', 'lastName', 'email', 'password'];
+
     for (const field of requiredFields) {
       if (!params[field] || params[field].trim().length === 0) {
         return {
           statusCode: 400,
-          body: `O campo ${field} é obrigatório.`,
+          body: {
+            errorMessage: `The field ${field} is required.`
+          },
+        };
+      }
+
+      if(params['password'].length < 6){
+        return {
+          statusCode: 400,
+          body: {
+            errorMessage: 'The password must be at least 6 characters long.'
+          },
+        };
+      }
+
+      const emailIsValid = validator.isEmail(params['email']);
+      if(!emailIsValid){
+        return {
+          statusCode: 400,
+          body: { 
+            errorMessage: 'E-mail is invalid. Add a valid e-mail.'
+          },
         };
       }
     }
