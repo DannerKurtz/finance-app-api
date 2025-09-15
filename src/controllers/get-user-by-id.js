@@ -1,4 +1,4 @@
-import { PostgresGetUserByIdRepository } from "../repositories/postgres/get-user-by-id.js";
+import { GetUserByIdUseCase } from "../use-cases/get-user-by-id.js";
 import { badRequest, internalServer, ok } from "./helpers.js";
 
 export class GetUserByIdController{
@@ -10,9 +10,8 @@ export class GetUserByIdController{
         return badRequest({message: 'The user id is required.'});
       }
 
-      const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
-
-      const user = await postgresGetUserByIdRepository.execute(userId);
+      const getUserByIdUseCase = new GetUserByIdUseCase();
+      const user = await getUserByIdUseCase.execute(userId);
 
       return ok({user});
 
