@@ -1,7 +1,7 @@
-import validator from 'validator';
 import { EmailAlreadyExistsError } from '../errors/user.js';
 import { CreateUserUseCase } from "../use-cases/create-user.js";
-import { badRequest, created, internalServer } from './helpers.js';
+import { badRequest, created, internalServer } from './helpers/http.js';
+import { checkIfEmailIsValid, checkIfPasswordIsValid, emailAlreadyExistsResponse, invalidPasswordResponse } from './helpers/user.js';
 
 export class CreateUserController{
   async execute(httpRequest) {
@@ -16,15 +16,13 @@ export class CreateUserController{
         return badRequest({message: `The field ${field} is required.`});
       }
 
-      if(params['password'].length < 6){
-        return badRequest({message: 'The password must be at least 6 characters long.'});
+      if(checkIfPasswordIsValid(params['password'])){
+        return invalidPasswordResponse();
       }
 
-      const emailIsValid = validator.isEmail(params['email']);
+      const emailIsValid = checkIfEmailIsValid(params['email']);
       if(!emailIsValid){
-        return badRequest({
-          message: 'E-mail is invalid. Add a valid e-mail.'
-        }) 
+        return emailAlreadyExistsResponse()
       }
     }
 

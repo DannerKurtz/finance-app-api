@@ -1,42 +1,43 @@
-import validator from 'validator';
+
 import { EmailAlreadyExistsError } from '../errors/user.js';
 import { UpdateUserUseCase } from '../use-cases/update-user.js';
-import { badRequest, internalServer, ok } from "./helpers.js";
+import { badRequest, internalServer, ok } from "./helpers/http.js";
+import { checkIfEmailIsValid, checkIfPasswordIsValid, checkIfUserIdIsValid, emailAlreadyExistsResponse, invalidIdResponse, invalidPasswordResponse } from './helpers/user.js';
 
 export class UpdateUserController{
   async execute(httpRequest){
     try {
-    const updateUserParams = httpRequest.body;
+    const params = httpRequest.body;
     const userId = httpRequest.params.userId;
 
-    if(!validator.isUUID(userId)){
-      return badRequest({message: 'The user id is required.'});
+    if(!checkIfUserIdIsValid(userId)){
+      return invalidIdResponse();
     }
 
     const allowedFields = ['first_name', 'last_name', 'email', 'password'];
 
-    const someFieldIsNotAllowed = Object.keys(updateUserParams).some(field => !allowedFields.includes(field));
+    const someFieldIsNotAllowed = Object.keys(params).some(field => !allowedFields.includes(field));
 
     if(someFieldIsNotAllowed){
       return badRequest({message: 'Some field is not allowed.'});
     }
 
-    if(updateUserParams.password){
-      const passwordIsValid = updateUserParams.password.length < 6
+    if(params.password){
+      const passwordIsValid = checkIfPasswordIsValid(params.password);
       if(passwordIsValid){
-          return badRequest({message: 'Password must be at least 6 characters long.'});
+          return invalidPasswordResponse();
       }
     }
 
-    if (updateUserParams.email) {
-      const emailIsValid = validator.isEmail(updateUserParams.email);
+    if (params.email) {
+      const emailIsValid = checkIfEmailIsValid(params.email);
       if (!emailIsValid) {
-        return badRequest({ message: 'E-mail is invalid. Add a valid e-mail.' });
+        return emailAlreadyExistsResponse();
       }
     }
 
     const updateUserUseCase = new UpdateUserUseCase();
-    const updatedUser = await updateUserUseCase.execute(userId, updateUserParams);
+    const updatedUser = await updateUserUseCase.execute(userId, params);
 
     return ok({updatedUser});
     } catch (error) {

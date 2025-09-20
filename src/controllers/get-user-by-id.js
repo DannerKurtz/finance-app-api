@@ -1,13 +1,14 @@
 import { GetUserByIdUseCase } from "../use-cases/get-user-by-id.js";
-import { badRequest, internalServer, notFound, ok } from "./helpers.js";
+import { internalServer, notFound, ok } from "./helpers/http.js";
+import { checkIfUserIdIsValid, invalidIdResponse } from "./helpers/user.js";
 
 export class GetUserByIdController{
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId;
       
-      if(!userId){
-        return badRequest({message: 'The user id is required.'});
+      if(!userId && checkIfUserIdIsValid(userId)){
+        return invalidIdResponse();
       }
 
       const getUserByIdUseCase = new GetUserByIdUseCase();
