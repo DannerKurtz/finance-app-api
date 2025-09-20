@@ -1,7 +1,6 @@
 import { EmailAlreadyExistsError } from '../errors/user.js';
-import { CreateUserUseCase } from "../use-cases/create-user.js";
-import { badRequest, created, internalServer } from './helpers/http.js';
-import { checkIfEmailIsValid, checkIfPasswordIsValid, emailAlreadyExistsResponse, invalidPasswordResponse } from './helpers/user.js';
+import { CreateUserUseCase } from "../use-cases/index.js";
+import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse } from './helpers/index.js';
 
 export class CreateUserController{
   async execute(httpRequest) {
@@ -16,7 +15,7 @@ export class CreateUserController{
         return badRequest({message: `The field ${field} is required.`});
       }
 
-      if(checkIfPasswordIsValid(params['password'])){
+      if(!checkIfPasswordIsValid(params['password'])){
         return invalidPasswordResponse();
       }
 

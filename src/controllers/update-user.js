@@ -1,8 +1,7 @@
 
 import { EmailAlreadyExistsError } from '../errors/user.js';
-import { UpdateUserUseCase } from '../use-cases/update-user.js';
-import { badRequest, internalServer, ok } from "./helpers/http.js";
-import { checkIfEmailIsValid, checkIfPasswordIsValid, checkIfUserIdIsValid, emailAlreadyExistsResponse, invalidIdResponse, invalidPasswordResponse } from './helpers/user.js';
+import { UpdateUserUseCase } from '../use-cases/index.js';
+import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, checkIfUserIdIsValid, emailAlreadyExistsResponse, internalServer, invalidIdResponse, invalidPasswordResponse, ok } from './helpers/index.js';
 
 export class UpdateUserController{
   async execute(httpRequest){
