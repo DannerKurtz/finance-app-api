@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
-import { CreateUserController, GetUserByIdController, UpdateUserController } from './controllers/index.js';
+import { CreateUserController, DeleteUserController, GetUserByIdController, UpdateUserController } from './controllers/index.js';
 
 const app = express() 
 app.use(express.json())
@@ -23,6 +23,11 @@ app.get('/api/users/:userId', async (req, res) => {
   res.status(getUserByIdResponse.statusCode).json(getUserByIdResponse.body);
 });
   
+app.delete('/api/users/:userId', async (req, res) => {
+  const deleteUserController = new DeleteUserController();
+  const deleteUserResponse = await deleteUserController.execute(req);
+  res.status(deleteUserResponse.statusCode).json(deleteUserResponse.body);
+})
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
