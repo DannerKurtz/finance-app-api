@@ -4,8 +4,10 @@ import { CreateUserController, DeleteUserController, GetUserByIdController, Upda
 import { PostgresCreateUserRepository } from './repositories/postgres/create-user.js';
 import { PostgresDeleteUserRepository } from './repositories/postgres/delete-user.js';
 import { PostgresGetUserByEmailRepository } from './repositories/postgres/get-user-by-email.js';
+import { PostgresGetUserByIdRepository } from './repositories/postgres/get-user-by-id.js';
 import { CreateUserUseCase } from './use-cases/create-user.js';
 import { DeleteUserUseCase } from './use-cases/delete-user.js';
+import { GetUserByIdUseCase } from './use-cases/get-user-by-id.js';
 
 const app = express() 
 app.use(express.json())
@@ -31,8 +33,14 @@ app.patch('/api/users/:userId', async (req, res) => {
 })
 
 app.get('/api/users/:userId', async (req, res) => {
-  const getUserByIdController = new GetUserByIdController();
+  const getUserByIdRepository = new PostgresGetUserByIdRepository();
+
+  const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository);
+
+  const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+
   const getUserByIdResponse = await getUserByIdController.execute(req);
+  
   res.status(getUserByIdResponse.statusCode).json(getUserByIdResponse.body);
 });
   
