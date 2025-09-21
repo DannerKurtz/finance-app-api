@@ -2,18 +2,25 @@ import 'dotenv/config.js';
 import express from 'express';
 import { CreateUserController, DeleteUserController, GetUserByIdController, UpdateUserController } from './controllers/index.js';
 import { PostgresCreateUserRepository } from './repositories/postgres/create-user.js';
+import { PostgresDeleteUserRepository } from './repositories/postgres/delete-user.js';
 import { PostgresGetUserByEmailRepository } from './repositories/postgres/get-user-by-email.js';
 import { CreateUserUseCase } from './use-cases/create-user.js';
+import { DeleteUserUseCase } from './use-cases/delete-user.js';
 
 const app = express() 
 app.use(express.json())
 
 app.post('/api/users', async (req, res) => {
   const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
+
   const createUserRepository = new PostgresCreateUserRepository()
+
   const createUserUseCase = new CreateUserUseCase(getUserByEmailRepository, createUserRepository)
+
   const createUserController = new CreateUserController(createUserUseCase);
+
   const createUserResponse = await createUserController.execute(req);
+
   res.status(createUserResponse.statusCode).json(createUserResponse.body);
 })
 
@@ -30,8 +37,14 @@ app.get('/api/users/:userId', async (req, res) => {
 });
   
 app.delete('/api/users/:userId', async (req, res) => {
-  const deleteUserController = new DeleteUserController();
+  const deleteUserRepository = new PostgresDeleteUserRepository()
+
+  const deleteUserUseCase = new DeleteUserUseCase(deleteUserRepository)
+
+  const deleteUserController = new DeleteUserController(deleteUserUseCase);
+
   const deleteUserResponse = await deleteUserController.execute(req);
+  
   res.status(deleteUserResponse.statusCode).json(deleteUserResponse.body);
 })
 
