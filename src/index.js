@@ -5,9 +5,11 @@ import { PostgresCreateUserRepository } from './repositories/postgres/create-use
 import { PostgresDeleteUserRepository } from './repositories/postgres/delete-user.js';
 import { PostgresGetUserByEmailRepository } from './repositories/postgres/get-user-by-email.js';
 import { PostgresGetUserByIdRepository } from './repositories/postgres/get-user-by-id.js';
+import { PostgresUpdateUserRepository } from './repositories/postgres/update-user.js';
 import { CreateUserUseCase } from './use-cases/create-user.js';
 import { DeleteUserUseCase } from './use-cases/delete-user.js';
 import { GetUserByIdUseCase } from './use-cases/get-user-by-id.js';
+import { UpdateUserUseCase } from './use-cases/update-user.js';
 
 const app = express() 
 app.use(express.json())
@@ -27,7 +29,10 @@ app.post('/api/users', async (req, res) => {
 })
 
 app.patch('/api/users/:userId', async (req, res) => {
-  const updateUserController = new UpdateUserController();
+  const getUserByEmailRepository = new PostgresGetUserByEmailRepository();
+  const updateUserRepository = new PostgresUpdateUserRepository();
+  const updateUserUseCase = new UpdateUserUseCase(getUserByEmailRepository, updateUserRepository)
+  const updateUserController = new UpdateUserController(updateUserUseCase);
   const updateUserRequest = await updateUserController.execute(req);
   res.status(updateUserRequest.statusCode).json(updateUserRequest.body);
 })
@@ -40,7 +45,7 @@ app.get('/api/users/:userId', async (req, res) => {
   const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
 
   const getUserByIdResponse = await getUserByIdController.execute(req);
-  
+
   res.status(getUserByIdResponse.statusCode).json(getUserByIdResponse.body);
 });
   

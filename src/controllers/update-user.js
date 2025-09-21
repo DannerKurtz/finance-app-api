@@ -1,9 +1,10 @@
-
 import { EmailAlreadyExistsError } from '../errors/user.js';
-import { UpdateUserUseCase } from '../use-cases/index.js';
 import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, checkIfUserIdIsValid, emailAlreadyExistsResponse, internalServer, invalidIdResponse, invalidPasswordResponse, ok } from './helpers/index.js';
 
 export class UpdateUserController{
+  constructor(updateUserUseCase){
+this.updateUserUseCase = updateUserUseCase
+  }
   async execute(httpRequest){
     try {
     const params = httpRequest.body;
@@ -35,8 +36,7 @@ export class UpdateUserController{
       }
     }
 
-    const updateUserUseCase = new UpdateUserUseCase();
-    const updatedUser = await updateUserUseCase.execute(userId, params);
+    const updatedUser = await this.updateUserUseCase.execute(userId, params);
 
     return ok({updatedUser});
     } catch (error) {
