@@ -1,5 +1,5 @@
-import { EmailAlreadyExistsError } from '../errors/user.js';
-import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse } from './helpers/index.js';
+import { EmailAlreadyExistsError } from '../../errors/user.js';
+import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse } from '../helpers/index.js';
 
 export class CreateUserController{
   constructor(createUserUseCase){
