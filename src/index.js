@@ -1,5 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
+import { makeCreateTransactionController } from './factory/controller/transaction.js';
 import { makeCreateUserController, makeDeleteUserController, makeGetUserByIdController, makeUpdateUserController } from './factory/controller/user.js';
 
 const app = express() 
@@ -34,6 +35,14 @@ app.delete('/api/users/:userId', async (req, res) => {
   
   res.status(deleteUserResponse.statusCode).json(deleteUserResponse.body);
 })
+
+app.post('/api/transactions', async (req, res) => {
+  const createTransactionController = makeCreateTransactionController();
+  const createTransactionResponse = await createTransactionController.execute(req);
+
+  res.status(createTransactionResponse.statusCode).json(createTransactionResponse.body);
+})
+
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
