@@ -18,6 +18,7 @@ export class PostgresCreateTransactionRepository {
       `SELECT * FROM transactions WHERE id = $1`,
       [createTransactionParams.id]
     )
+    
     return transactionCreated[0];
   }
 }

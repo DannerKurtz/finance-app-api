@@ -1,5 +1,5 @@
-import { validator } from 'validator';
-import { badRequest, checkIfUserIdIsValid, internalServer, invalidIdResponse } from './../helpers/index.js';
+import validator from 'validator';
+import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -7,10 +7,10 @@ export class CreateTransactionController {
   async execute(httpRequest) {
     try {
       const params = httpRequest.body;
-      const requiredFields = ['id', 'userId', 'name', 'amount', 'date', 'type'];
+      const requiredFields = ['userId', 'name', 'amount', 'date', 'type'];
       
       for (const field of requiredFields) {
-        if (!params[field] || params[field].trim().length === 0) {
+        if (!params[field] || params[field].toString().trim().length === 0) {
           return badRequest({message: `The field ${field} is required.`});
         }
       }
@@ -27,10 +27,10 @@ export class CreateTransactionController {
 
       const amountIsValid = validator.isCurrency(params.amount.toString(), { 
         digits_after_decimal: [2],
-        allow_decimal: false,
+        allow_decimal: true,
         decimal_separator: '.',
        });
-
+       
        if(!amountIsValid){
         return badRequest({message: 'The amount is invalid.'});
        }
@@ -40,9 +40,9 @@ export class CreateTransactionController {
           return badRequest({message: 'The type is invalid. It must be EARNING, EXPENSE or INVESTMENT.'});
         }
 
-        const transaction = this.createTransactionUseCase.execute({...params, type});
-
-        return transaction;
+        const transaction = await this.createTransactionUseCase.execute({...params, type});
+        
+        return created({transaction});
     } catch (error) {
       console.error(error);
       return internalServer()
