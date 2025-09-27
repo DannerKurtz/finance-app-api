@@ -1,4 +1,4 @@
-import { checkIfAmountIsValid } from '../helpers/transaction.js';
+import { checkIfAmountIsValid, checkIfTypeIsValid } from '../helpers/transaction.js';
 import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
@@ -27,7 +27,7 @@ export class CreateTransactionController {
         return badRequest({message: 'The amount is invalid.'});
        }
        const type = params.type.trim().toUpperCase();
-       const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type);
+       const typeIsValid = checkIfTypeIsValid(type);
         if(!typeIsValid){
           return badRequest({message: 'The type is invalid. It must be EARNING, EXPENSE or INVESTMENT.'});
         }

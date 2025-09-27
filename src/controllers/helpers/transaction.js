@@ -6,3 +6,5 @@ export const checkIfAmountIsValid = (amount) =>(
     allow_decimal: true,
     decimal_separator: '.',
 }));
+
+export const checkIfTypeIsValid = (type) => (['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type))
