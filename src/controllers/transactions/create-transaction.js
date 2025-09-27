@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, validateRequiredFids } from './../helpers/index.js';
+import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -12,17 +12,13 @@ export class CreateTransactionController {
       const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
 
       if(!requireFieldsWereProvided){
-        return badRequest({message: `The field ${missingField} is required.`});
+        return requiredFieldIsMissingResponse(missingField);
       }
 
       const userIdIsValid = checkIfUserIdIsValid(params.userId);
 
       if(!userIdIsValid){
         return invalidIdResponse();
-      }
-
-      if (params.amount <= 0){
-        return badRequest({message: 'The amount must be greater than zero.'});
       }
 
       const amountIsValid = validator.isCurrency(params.amount.toString(), { 

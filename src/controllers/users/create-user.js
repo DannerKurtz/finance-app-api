@@ -1,5 +1,5 @@
 import { EmailAlreadyExistsError } from '../../errors/user.js';
-import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse, validateRequiredFids } from '../helpers/index.js';
+import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse, requiredFieldIsMissingResponse, validateRequiredFids } from '../helpers/index.js';
 
 export class CreateUserController{
   constructor(createUserUseCase){
@@ -16,7 +16,7 @@ export class CreateUserController{
     const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
     
     if(!requireFieldsWereProvided){
-      return badRequest({message: `The field ${missingField} is required.`});
+      return requiredFieldIsMissingResponse(missingField);
     }
 
     if(!checkIfPasswordIsValid(params['password'])){
