@@ -1,5 +1,5 @@
-import { checkIfAmountIsValid, checkIfTypeIsValid } from '../helpers/transaction.js';
-import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
+import { checkIfAmountIsValid, checkIfTypeIsValid, invalidAmountResponse, invalidTypeResponse } from '../helpers/transaction.js';
+import { checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -24,12 +24,12 @@ export class CreateTransactionController {
       const amountIsValid = checkIfAmountIsValid(params.amount);
        
        if(!amountIsValid){
-        return badRequest({message: 'The amount is invalid.'});
+        return invalidAmountResponse();
        }
        const type = params.type.trim().toUpperCase();
        const typeIsValid = checkIfTypeIsValid(type);
         if(!typeIsValid){
-          return badRequest({message: 'The type is invalid. It must be EARNING, EXPENSE or INVESTMENT.'});
+          return invalidTypeResponse();
         }
 
         const transaction = await this.createTransactionUseCase.execute({...params, type});
