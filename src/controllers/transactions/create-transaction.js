@@ -1,4 +1,4 @@
-import validator from 'validator';
+import { checkIfAmountIsValid } from '../helpers/transaction.js';
 import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
@@ -21,11 +21,7 @@ export class CreateTransactionController {
         return invalidIdResponse();
       }
 
-      const amountIsValid = validator.isCurrency(params.amount.toString(), { 
-        digits_after_decimal: [2],
-        allow_decimal: true,
-        decimal_separator: '.',
-       });
+      const amountIsValid = checkIfAmountIsValid(params.amount);
        
        if(!amountIsValid){
         return badRequest({message: 'The amount is invalid.'});
