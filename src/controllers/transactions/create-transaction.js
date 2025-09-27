@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse } from './../helpers/index.js';
+import { badRequest, checkIfUserIdIsValid, created, internalServer, invalidIdResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -9,10 +9,10 @@ export class CreateTransactionController {
       const params = httpRequest.body;
       const requiredFields = ['userId', 'name', 'amount', 'date', 'type'];
       
-      for (const field of requiredFields) {
-        if (!params[field] || params[field].toString().trim().length === 0) {
-          return badRequest({message: `The field ${field} is required.`});
-        }
+      const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
+
+      if(!requireFieldsWereProvided){
+        return badRequest({message: `The field ${missingField} is required.`});
       }
 
       const userIdIsValid = checkIfUserIdIsValid(params.userId);

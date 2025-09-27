@@ -1,5 +1,5 @@
 import { EmailAlreadyExistsError } from '../../errors/user.js';
-import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse } from '../helpers/index.js';
+import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse, validateRequiredFids } from '../helpers/index.js';
 
 export class CreateUserController{
   constructor(createUserUseCase){
@@ -13,12 +13,13 @@ export class CreateUserController{
     // validar a requisição (campos obrigatórios)
     const requiredFields = ['firstName', 'lastName', 'email', 'password'];
 
-    for (const field of requiredFields) {
-      if (!params[field] || params[field].trim().length === 0) {
-        return badRequest({message: `The field ${field} is required.`});
-      }
+    const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
+    
+    if(!requireFieldsWereProvided){
+      return badRequest({message: `The field ${missingField} is required.`});
+    }
 
-      if(!checkIfPasswordIsValid(params['password'])){
+    if(!checkIfPasswordIsValid(params['password'])){
         return invalidPasswordResponse();
       }
 
@@ -26,8 +27,6 @@ export class CreateUserController{
       if(!emailIsValid){
         return emailAlreadyExistsResponse()
       }
-    }
-
     // chamar o use case
 
     const createdUser = await this.createUserUseCase.execute(params);
