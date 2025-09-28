@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
-import { makeCreateTransactionController, makeGetTransactionsByUserIdController, makeUpdateTransactionController } from './factory/controller/transaction.js';
+import { makeCreateTransactionController, makeDeleteTransactionController, makeGetTransactionsByUserIdController, makeUpdateTransactionController } from './factory/controller/transaction.js';
 import { makeCreateUserController, makeDeleteUserController, makeGetUserByIdController, makeUpdateUserController } from './factory/controller/user.js';
 
 const app = express() 
@@ -57,6 +57,12 @@ app.patch('/api/transactions/:transactionId', async (req, res) => {
   res.status(updateTransactionResponse.statusCode).json(updateTransactionResponse.body);
 })
 
+app.delete('/api/transactions/:transactionId', async (req, res) => {
+  const deleteTransactionController = makeDeleteTransactionController();
+  const deleteTransactionResponse = await deleteTransactionController.execute(req);
+
+  res.status(deleteTransactionResponse.statusCode).json(deleteTransactionResponse.body);
+})
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
