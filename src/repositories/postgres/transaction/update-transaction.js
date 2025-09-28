@@ -2,15 +2,15 @@ import { PostgresHelper } from "../../../database/postgres/helper-postgres.js";
 
 
 export class PostgresUpdateTransactionRepository{
-   async execute(userId, updateUserParams) {
+   async execute(transactionId, updateTransactionParams) {
     const updateFields = [];
     const updateValues = [];
 
-    Object.keys(updateUserParams).forEach((key, index) => {
+    Object.keys(updateTransactionParams).forEach((key, index) => {
       updateFields.push(`${key} = $${index + 1}`);
-      updateValues.push(updateUserParams[key]);
+      updateValues.push(updateTransactionParams[key]);
     });
-    updateValues.push(userId);
+    updateValues.push(transactionId);
     
     const updateQuery = `
       UPDATE users
