@@ -1,5 +1,5 @@
 import { UserNotFoundError } from "../../errors/user.js";
-import { badRequest, checkIfUserIdIsValid, internalServer, invalidIdResponse, ok, requiredFieldIsMissingResponse } from "../helpers/index.js";
+import { badRequest, checkIfIdIsValid, internalServer, invalidIdResponse, ok, requiredFieldIsMissingResponse } from "../helpers/index.js";
 
 export class GetTransactionsByUserIdController {
   constructor(getTransactionsByUserIdUseCase){
@@ -11,7 +11,7 @@ export class GetTransactionsByUserIdController {
     if(!userId){
       return requiredFieldIsMissingResponse('userId');
     }
-    const checkUserId = checkIfUserIdIsValid(userId);
+    const checkUserId = checkIfIdIsValid(userId);
     if(!checkUserId){
       return invalidIdResponse(userId);
     }

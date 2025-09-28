@@ -1,5 +1,5 @@
 import { checkIfAmountIsValid, checkIfTypeIsValid, invalidAmountResponse, invalidTypeResponse } from '../helpers/transaction.js';
-import { checkIfUserIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
+import { checkIfIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -15,7 +15,7 @@ export class CreateTransactionController {
         return requiredFieldIsMissingResponse(missingField);
       }
 
-      const userIdIsValid = checkIfUserIdIsValid(params.userId);
+      const userIdIsValid = checkIfIdIsValid(params.userId);
 
       if(!userIdIsValid){
         return invalidIdResponse();

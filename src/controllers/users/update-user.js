@@ -1,5 +1,5 @@
 import { EmailAlreadyExistsError } from '../../errors/user.js';
-import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, checkIfUserIdIsValid, emailAlreadyExistsResponse, internalServer, invalidIdResponse, invalidPasswordResponse, ok } from '../helpers/index.js';
+import { badRequest, checkIfEmailIsValid, checkIfIdIsValid, checkIfPasswordIsValid, emailAlreadyExistsResponse, internalServer, invalidIdResponse, invalidPasswordResponse, ok } from '../helpers/index.js';
 
 export class UpdateUserController{
   constructor(updateUserUseCase){
@@ -10,7 +10,7 @@ this.updateUserUseCase = updateUserUseCase
     const params = httpRequest.body;
     const userId = httpRequest.params.userId;
 
-    if(!checkIfUserIdIsValid(userId)){
+    if(!checkIfIdIsValid(userId)){
       return invalidIdResponse();
     }
 

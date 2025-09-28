@@ -1,4 +1,4 @@
-import { checkIfUserIdIsValid, internalServer, invalidIdResponse, notFound, ok } from "../helpers/index.js";
+import { checkIfIdIsValid, internalServer, invalidIdResponse, notFound, ok } from "../helpers/index.js";
 
 export class DeleteUserController{
   constructor(deleteUserUseCase){
@@ -8,7 +8,7 @@ export class DeleteUserController{
       try {
         const userId = httpRequest.params.userId;
         
-        if(!userId && checkIfUserIdIsValid(userId)){
+        if(!userId && checkIfIdIsValid(userId)){
           return invalidIdResponse();
         }
 
