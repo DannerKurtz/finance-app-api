@@ -1,7 +1,7 @@
 import 'dotenv/config.js';
 import express from 'express';
 import { makeCreateTransactionController, makeDeleteTransactionController, makeGetTransactionsByUserIdController, makeUpdateTransactionController } from './factory/controller/transaction.js';
-import { makeCreateUserController, makeDeleteUserController, makeGetUserByIdController, makeUpdateUserController } from './factory/controller/user.js';
+import { makeCreateUserController, makeDeleteUserController, makeGetUserBalanceController, makeGetUserByIdController, makeUpdateUserController } from './factory/controller/user.js';
 
 const app = express() 
 app.use(express.json())
@@ -28,6 +28,14 @@ app.get('/api/users/:userId', async (req, res) => {
   res.status(getUserByIdResponse.statusCode).json(getUserByIdResponse.body);
 });
   
+app.get('/api/users/:userId/balance', async (req, res) => {
+  const getUserBalanceController = makeGetUserBalanceController();
+
+  const getUserBalanceResponse = await getUserBalanceController.execute(req);
+
+  res.status(getUserBalanceResponse.statusCode).json(getUserBalanceResponse.body);
+})
+
 app.delete('/api/users/:userId', async (req, res) => {
   const deleteUserController = makeDeleteUserController()
 
