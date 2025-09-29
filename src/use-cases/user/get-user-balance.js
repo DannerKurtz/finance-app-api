@@ -1,3 +1,4 @@
+import { UserNotFoundError } from "../../errors/user.js";
 
 
 export class GetUserBalanceUseCase {
@@ -9,7 +10,7 @@ export class GetUserBalanceUseCase {
     const user = await this.getUserByIdRepository.execute(params.userId);
 
     if(!user){
-      throw new Error('User not found');
+      throw new UserNotFoundError('User not found');
     }
 
     const balance = await this.getUserBalanceRepository.execute(params.userId);
