@@ -9,19 +9,23 @@ const __dirname = path.dirname(__filename);
 
 const execMigrations = async () => {
   try {
-    const filePath = path.join(__dirname, 'migration-01-init.sql');
-  const script = fs.readFileSync(filePath, 'utf-8');
+    const client = await pool.connect();
+    const files = fs.readdirSync(__dirname).filter(file => file.endsWith('.sql'));
 
-  const client = await pool.connect();
-  await client.query(script);
+    for (const file of files) {
+      const filePath = path.join(__dirname, file);
+      const script = fs.readFileSync(filePath, 'utf-8');
+
+      await client.query(script);
+      console.log(`Migration ${file} executed successfully.`)
+    }
 
   client.release();
 
-  console.log('Migration executed successfully.');
+  console.log('all migration executed successfully.');
   } catch (error) {
     console.log('Error executing migration:', error);
   }
-
 }
 
 execMigrations();
