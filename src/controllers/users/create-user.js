@@ -1,5 +1,7 @@
+import z from 'zod';
 import { EmailAlreadyExistsError } from '../../errors/user.js';
-import { badRequest, checkIfEmailIsValid, checkIfPasswordIsValid, created, emailAlreadyExistsResponse, internalServer, invalidPasswordResponse, requiredFieldIsMissingResponse, validateRequiredFids } from '../helpers/index.js';
+import { createUserSchema } from '../../schemas/index.js';
+import { badRequest, created, internalServer } from '../helpers/index.js';
 
 export class CreateUserController{
   constructor(createUserUseCase){
@@ -10,24 +12,8 @@ export class CreateUserController{
    try {
      const params = httpRequest.body;
 
-    // validar a requisição (campos obrigatórios)
-    const requiredFields = ['firstName', 'lastName', 'email', 'password'];
-
-    const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
     
-    if(!requireFieldsWereProvided){
-      return requiredFieldIsMissingResponse(missingField);
-    }
-
-    if(!checkIfPasswordIsValid(params['password'])){
-        return invalidPasswordResponse();
-      }
-
-      const emailIsValid = checkIfEmailIsValid(params['email']);
-      if(!emailIsValid){
-        return emailAlreadyExistsResponse()
-      }
-    // chamar o use case
+    await z.parseAsync(createUserSchema, params);
 
     const createdUser = await this.createUserUseCase.execute(params);
 
@@ -35,6 +21,10 @@ export class CreateUserController{
     return created({createdUser});
   
    } catch (error) {
+    if(error instanceof z.ZodError){
+      return badRequest({message: error.issues[0].message});
+    }
+
     if(error instanceof EmailAlreadyExistsError){
       return badRequest({message: error.message});
     }
