@@ -1,12 +1,12 @@
 import { z } from "zod";
 
  export const createUserSchema = z.object({
-      firstName: z.string({
+      first_name: z.string({
         message: 'First name is required.',
       }).trim().min(3, {
         message: 'First name must have at least 3 characters.'
       }),
-      lastName: z.string({
+      last_name: z.string({
         required_error: 'Last name is required.'
       }).trim().min(3, {
         message: 'Last name must have at least 3 characters.'
@@ -21,4 +21,8 @@ import { z } from "zod";
       }).trim().min(6, {
         message: 'Password must have at least 6 characters.'
       })
+     })
+
+     export const updateUserSchema = createUserSchema.partial().strict({
+      message: 'Some field is not allowed.'
      })
