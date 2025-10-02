@@ -1,5 +1,6 @@
-import { checkIfAmountIsValid, checkIfTypeIsValid, invalidAmountResponse, invalidTypeResponse } from '../helpers/transaction.js';
-import { checkIfIdIsValid, created, internalServer, invalidIdResponse, requiredFieldIsMissingResponse, validateRequiredFids } from './../helpers/index.js';
+import z from 'zod';
+import { createTransactionSchema } from '../../schemas/index.js';
+import { badRequest, created, internalServer } from './../helpers/index.js';
 export class CreateTransactionController {
   constructor(crateTransactionUseCase){
     this.createTransactionUseCase = crateTransactionUseCase
@@ -7,35 +8,16 @@ export class CreateTransactionController {
   async execute(httpRequest) {
     try {
       const params = httpRequest.body;
-      const requiredFields = ['userId', 'name', 'amount', 'date', 'type'];
-      
-      const {missingField, ok: requireFieldsWereProvided} = validateRequiredFids(params, requiredFields);
 
-      if(!requireFieldsWereProvided){
-        return requiredFieldIsMissingResponse(missingField);
-      }
+      await z.parseAsync(createTransactionSchema, params)
 
-      const userIdIsValid = checkIfIdIsValid(params.userId);
-
-      if(!userIdIsValid){
-        return invalidIdResponse();
-      }
-
-      const amountIsValid = checkIfAmountIsValid(params.amount);
-       
-       if(!amountIsValid){
-        return invalidAmountResponse();
-       }
-       const type = params.type.trim().toUpperCase();
-       const typeIsValid = checkIfTypeIsValid(type);
-        if(!typeIsValid){
-          return invalidTypeResponse();
-        }
-
-        const transaction = await this.createTransactionUseCase.execute({...params, type});
+        const transaction = await this.createTransactionUseCase.execute({...params});
         
         return created({transaction});
     } catch (error) {
+      if(error instanceof z.ZodError){
+        return badRequest({message: error.issues[0].message});
+      }
       console.error(error);
       return internalServer()
     }
