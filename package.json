@@ -7,7 +7,8 @@
   "scripts": {
     "start:dev": "node --watch ./src/index.js ",
     "migration:run": "node ./src/database/postgres/migrations/exec.js",
-    "test": "jest"
+    "test:watch": "jest --watch",
+    "test": "jest "
   },
   "keywords": [],
   "author": "",
