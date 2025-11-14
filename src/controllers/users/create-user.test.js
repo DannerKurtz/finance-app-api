@@ -50,4 +50,25 @@ describe('Create User Controller', () => {
     //assert
     expect(result.statusCode).toBe(400);
   });
+
+  it('should return 400 if last_name is not provided', async () => {
+    //arrange
+    const createUserUseCaseStub = new CreateUserUseCaseStub();
+    const createUserController = new CreateUserController(
+      createUserUseCaseStub,
+    );
+    const httpRequest = {
+      body: {
+        first_name: 'Jhon',
+        email: 'Doe.Jhon@exemple.com',
+        password: '1a25sr7',
+      },
+    };
+
+    //act
+    const result = await createUserController.execute(httpRequest);
+
+    //assert
+    expect(result.statusCode).toBe(400);
+  });
 });
