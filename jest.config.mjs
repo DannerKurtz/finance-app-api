@@ -5,18 +5,15 @@
 
 /** @type {import('jest').Config} */
 const config = {
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageProvider: 'v8',
   testEnvironment: 'node',
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   transform: {},
-  watchPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/postgres_data/',
-  ],
+  testPathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
+  watchPathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
+  modulePathIgnorePatterns: ['/postgres_data/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
 };
 
 export default config;
