@@ -8,6 +8,11 @@ const config = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  transform: {},
   watchPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/postgres_data/',
