@@ -44,7 +44,7 @@ describe('GetUserByIdController', () => {
       params: { userId: 'invalid_id' },
     });
     //assert
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(400);
   });
 
   it('should return 404 is user not found', async () => {
