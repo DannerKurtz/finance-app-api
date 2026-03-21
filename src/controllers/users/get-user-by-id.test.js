@@ -35,6 +35,18 @@ describe('GetUserByIdController', () => {
     expect(result.statusCode).toBe(200);
   });
 
+  it('should return 400 if a invalid id', async () => {
+    //arrange
+    const { sut } = makeSut();
+
+    //act
+    const result = await sut.execute({
+      params: { userId: 'invalid_id' },
+    });
+    //assert
+    expect(result.statusCode).toBe(200);
+  });
+
   it('should return 404 is user not found', async () => {
     //arrange
     const { sut, getUserByIdUseCase } = makeSut();
