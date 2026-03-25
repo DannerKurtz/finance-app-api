@@ -7,13 +7,12 @@ export class DeleteUserController{
   async execute(httpRequest) {
       try {
         const userId = httpRequest.params.userId;
-        
-        if(!userId && checkIfIdIsValid(userId)){
+        if(!userId || !checkIfIdIsValid(userId)){
           return invalidIdResponse();
         }
 
         const deletedUser = await this.deleteUserUseCase.execute(userId);
-  
+        console.log(deletedUser)
         if(!deletedUser){
           return notFound({message: 'User not found.'});
         }

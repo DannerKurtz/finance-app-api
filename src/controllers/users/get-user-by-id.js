@@ -1,26 +1,30 @@
-import { checkIfIdIsValid, internalServer, invalidIdResponse, notFound, ok } from "../helpers/index.js";
+import {
+  checkIfIdIsValid,
+  internalServer,
+  invalidIdResponse,
+  notFound,
+  ok,
+} from '../helpers/index.js';
 
-export class GetUserByIdController{
-  constructor(getUserByIdUseCase){
+export class GetUserByIdController {
+  constructor(getUserByIdUseCase) {
     this.getUserByIdUseCase = getUserByIdUseCase;
-  
   }
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.userId;
-      
-      if(!userId && checkIfIdIsValid(userId)){
+
+      if (!userId || !checkIfIdIsValid(userId)) {
         return invalidIdResponse();
       }
       const user = await this.getUserByIdUseCase.execute(userId);
 
-      if(!user){
-        return notFound({message: 'User not found.'});
+      if (!user) {
+        return notFound({ message: 'User not found.' });
       }
 
-      return ok({user});
+      return ok({ user });
     } catch (error) {
-      
       console.error(error);
       return internalServer();
     }
