@@ -85,4 +85,21 @@ describe('UpdateUSerController', () => {
     //assert
     expect(result.statusCode).toBe(400);
   });
+
+  it('should return 400 when an unallowed field is provided', async () => {
+    //arrange
+    const { sut } = makeSut();
+    //act
+    const result = await sut.execute({
+      params: {
+        userId: faker.string.uuid(),
+      },
+      body: {
+        ...httpRequest.body,
+        unallowed_field: 'This field is not included in the schema',
+      },
+    });
+    //assert
+    expect(result.statusCode).toBe(400);
+  });
 });
