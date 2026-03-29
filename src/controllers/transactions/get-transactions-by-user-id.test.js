@@ -1,0 +1,38 @@
+import { faker } from '@faker-js/faker';
+import { GetTransactionsByUserIdController } from './get-transactions-by-user-id';
+
+describe('Get Transaction By User Id Controller', () => {
+  class GetTransactionByUserIdUseCaseStub {
+    async execute() {
+      return [
+        {
+          id: faker.string.uuid(),
+          userId: faker.string.uuid(),
+          name: faker.commerce.productName(),
+          date: faker.date.anytime().toISOString(),
+          type: 'EXPENSE',
+          amount: Number(faker.finance.amount()),
+        },
+      ];
+    }
+  }
+  const makeSut = () => {
+    const getTransactionsByUserIdUseCase =
+      new GetTransactionByUserIdUseCaseStub();
+    const sut = new GetTransactionsByUserIdController(
+      getTransactionsByUserIdUseCase,
+    );
+
+    return { sut, getTransactionsByUserIdUseCase };
+  };
+  it('should return 200 when finding transaction by user id successfully', async () => {
+    //arrange
+    const { sut } = makeSut();
+    //act
+    const result = await sut.execute({
+      query: { userId: faker.string.uuid() },
+    });
+    //assert
+    expect(result.statusCode).toBe(200);
+  });
+});
