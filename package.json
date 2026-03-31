@@ -7,8 +7,8 @@
   "scripts": {
     "start:dev": "node --watch ./src/index.js ",
     "migration:run": "node ./src/database/postgres/migrations/exec.js",
-    "test:watch": "NODE_OPTIONS='--experimental-vm-modules' --no-warnings' jest --watch --silent",
-    "test": "NODE_OPTIONS='--experimental-vm-modules' --no-warnings' jest --silent",
+    "test:watch": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --watch --silent",
+    "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' jest --silent",
     "test:coverage": "NODE_OPTIONS='--experimental-vm-modules' jest --silent --coverage"
   },
   "keywords": [],
