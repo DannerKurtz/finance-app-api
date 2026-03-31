@@ -3,6 +3,7 @@ import {
   badRequest,
   checkIfIdIsValid,
   internalServer,
+  notFound,
   ok,
 } from '../helpers/index.js';
 
@@ -25,7 +26,7 @@ export class GetUserBalanceController {
       return ok({ balance });
     } catch (error) {
       if (error instanceof UserNotFoundError) {
-        return badRequest({ message: error.message });
+        return notFound({ message: error.message });
       }
       console.error(error);
       return internalServer();
