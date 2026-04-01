@@ -5,7 +5,11 @@
 
 /** @type {import('jest').Config} */
 const config = {
-  collectCoverageFrom: ['src/**/*.js'],
+  collectCoverageFrom: [
+    'src/**/*.js',
+    '!src/**/*.test.js',
+    '!src/**/*.spec.js',
+  ],
   testEnvironment: 'node',
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
