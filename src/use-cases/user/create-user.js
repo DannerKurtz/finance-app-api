@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { EmailAlreadyExistsError } from '../../errors/user.js';
 
 export class CreateUserUseCase {
@@ -6,10 +5,12 @@ export class CreateUserUseCase {
     getUserByEmailRepository,
     createUserRepository,
     passwordHasherAdapter,
+    idGeneratorAdapter,
   ) {
     this.getUserByEmailRepository = getUserByEmailRepository;
     this.createUserRepository = createUserRepository;
     this.passwordHasherAdapter = passwordHasherAdapter;
+    this.idGeneratorAdapter = idGeneratorAdapter;
   }
   async execute(createUserParams) {
     const userAlreadyExists = await this.getUserByEmailRepository.execute(
@@ -20,7 +21,7 @@ export class CreateUserUseCase {
       throw new EmailAlreadyExistsError(createUserParams.email);
     }
     // gerar Id do usuário;
-    const userId = uuid();
+    const userId = this.idGeneratorAdapter.execute();
 
     // criptografar senha;
     const hashedPassword = await this.passwordHasherAdapter.execute(
