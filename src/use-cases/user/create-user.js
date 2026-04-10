@@ -21,7 +21,7 @@ export class CreateUserUseCase {
       throw new EmailAlreadyExistsError(createUserParams.email);
     }
     // gerar Id do usuário;
-    const userId = this.idGeneratorAdapter.execute();
+    const userId = await this.idGeneratorAdapter.execute();
 
     // criptografar senha;
     const hashedPassword = await this.passwordHasherAdapter.execute(
