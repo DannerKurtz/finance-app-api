@@ -74,4 +74,29 @@ describe('Create User Use Case', () => {
       new EmailAlreadyExistsError(user.email),
     );
   });
+  it('should call IdGeneratorAdapter to generate a random uuid and call with PasswordHashed', async () => {
+    //arrange
+    const {
+      sut,
+      idGeneratorAdapter,
+      createUserRepository,
+      passwordHasherAdapter,
+    } = makeSut();
+    const idGeneratorSpy = jest.spyOn(idGeneratorAdapter, 'execute');
+    const createUserRepositorySpy = jest.spyOn(createUserRepository, 'execute');
+    const passwordHasherAdapterSpy = jest.spyOn(
+      passwordHasherAdapter,
+      'execute',
+    );
+    //act
+    await sut.execute(user);
+    //assert
+    expect(idGeneratorSpy).toHaveBeenCalled();
+    expect(passwordHasherAdapterSpy).toHaveBeenCalled();
+    expect(createUserRepositorySpy).toHaveBeenCalledWith({
+      ...user,
+      id: 'id_generator',
+      password: 'hashed_password',
+    });
+  });
 });
