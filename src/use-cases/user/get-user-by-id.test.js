@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { jest } from '@jest/globals';
 import { GetUserByIdUseCase } from './get-user-by-id';
 
 describe('Get User By Id Use Case', () => {
@@ -32,5 +33,17 @@ describe('Get User By Id Use Case', () => {
 
     // Assert
     expect(result).toBe(user);
+  });
+
+  it('should call GetUserByIdRepository with correct values', async () => {
+    // Arrange
+    const { sut, getUserByIdRepository } = makeSut();
+    const executeSpy = jest.spyOn(getUserByIdRepository, 'execute');
+    const userId = faker.string.uuid();
+    // Act
+    await sut.execute(userId);
+
+    // Assert
+    expect(executeSpy).toHaveBeenCalledWith(userId);
   });
 });
