@@ -128,4 +128,17 @@ describe('CreateTransactionUseCase', () => {
       new Error('CreateTransactionRepository error').message,
     );
   });
+
+  it('should throw if idGeneratorAdapter throws', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    jest.spyOn(sut.idGeneratorAdapter, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    // Act
+    const promise = sut.execute(createTransactionParams);
+    // Assert
+    await expect(promise).rejects.toThrow();
+  });
 });
