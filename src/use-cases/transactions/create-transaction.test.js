@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
+import { jest } from '@jest/globals';
 import { CreateTransactionUseCase } from './create-transaction';
 
 describe('CreateTransactionUseCase', () => {
   const createTransactionParams = {
-    user_id: faker.string.uuid(),
+    userId: faker.string.uuid(),
     name: faker.commerce.productName(),
     date: faker.date.anytime().toISOString(),
     type: 'EXPENSE',
@@ -48,6 +49,7 @@ describe('CreateTransactionUseCase', () => {
 
     return {
       sut,
+      getUserByIdRepository,
     };
   };
   it('should create transaction successfully', async () => {
@@ -57,5 +59,20 @@ describe('CreateTransactionUseCase', () => {
     const result = await sut.execute(createTransactionParams);
     // Assert
     expect(result).toEqual({ ...createTransactionParams, id: 'random_id' });
+  });
+
+  it('should call GetUserByIdRepository with correct params', async () => {
+    // Arrange
+    const { sut, getUserByIdRepository } = makeSut();
+    const getUserByIdRepositorySpy = jest.spyOn(
+      getUserByIdRepository,
+      'execute',
+    );
+    // Act
+    await sut.execute(createTransactionParams);
+    // Assert
+    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(
+      createTransactionParams.userId,
+    );
   });
 });
