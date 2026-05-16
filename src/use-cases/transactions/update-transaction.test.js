@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { jest } from '@jest/globals';
 import { UpdateTransactionUseCase } from './update-transaction';
 
 describe('Update Transaction Use Case', () => {
@@ -41,5 +42,17 @@ describe('Update Transaction Use Case', () => {
       id: transaction.id,
       ...transaction,
     });
+  });
+
+  it('should call UpdateTransactionRepository with correct values', async () => {
+    // Arrange
+    const { sut, updateTransactionRepository } = makeSut();
+    const executeSpy = jest.spyOn(updateTransactionRepository, 'execute');
+
+    // Act
+    await sut.execute(transaction.id, transaction);
+
+    // Assert
+    expect(executeSpy).toHaveBeenCalledWith(transaction.id, transaction);
   });
 });
