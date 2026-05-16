@@ -55,4 +55,18 @@ describe('Update Transaction Use Case', () => {
     // Assert
     expect(executeSpy).toHaveBeenCalledWith(transaction.id, transaction);
   });
+
+  it('should throw if UpdateTransactionRepository throws', async () => {
+    // Arrange
+    const { sut, updateTransactionRepository } = makeSut();
+    jest
+      .spyOn(updateTransactionRepository, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    // Act
+    const promise = sut.execute(transaction.id, transaction);
+
+    // Assert
+    await expect(promise).rejects.toThrow();
+  });
 });
