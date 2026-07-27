@@ -1,16 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
+import { user } from '../../tests';
 import { DeleteUserUseCase } from './delete-user';
 
 describe('DeleteUserUseCase', () => {
-  const user = {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 7,
-    }),
-  };
   class DeleteUserRepositoryStub {
     async execute() {
       return user;
