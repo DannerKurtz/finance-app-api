@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { EmailAlreadyExistsError } from '../../errors/user';
+import { user } from '../../tests';
 import { UpdateUserController } from './update-user';
 describe('UpdateUSerController', () => {
   class UpdateUserUseCaseStub {
-    async execute(user) {
+    async execute() {
       return user;
     }
   }
