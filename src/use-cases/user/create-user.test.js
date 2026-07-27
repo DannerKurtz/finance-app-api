@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { EmailAlreadyExistsError } from '../../errors/user';
+import { user } from '../../tests';
 import { CreateUserUseCase } from './create-user';
 
 describe('Create User Use Case', () => {
@@ -45,14 +45,7 @@ describe('Create User Use Case', () => {
       idGeneratorAdapter,
     };
   };
-  const user = {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 7,
-    }),
-  };
+
   it('should successfully create a user', async () => {
     //arrange
     const { sut } = makeSut();
