@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
+import { transaction } from '../../tests';
 import { CreateTransactionController } from './create-transaction';
 
 describe('Create Transaction Controller', () => {
   class CreateTransactionUseCaseStub {
-    async execute(transaction) {
+    async execute() {
       return transaction;
     }
   }
