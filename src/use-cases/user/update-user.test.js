@@ -1,18 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { EmailAlreadyExistsError } from '../../errors/user';
+import { user } from '../../tests';
 import { UpdateUserUseCase } from './update-user';
 
 describe('UpdateUserUseCase', () => {
-  const user = {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 7,
-    }),
-  };
-
   class GetUserByEmailRepositoryStub {
     async execute() {
       return null;
