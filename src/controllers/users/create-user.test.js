@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
 import { EmailAlreadyExistsError } from '../../errors/user.js';
+import { user } from '../../tests/index.js';
 import { CreateUserController } from './create-user.js';
 
 describe('Create User Controller', () => {
   class CreateUserUseCaseStub {
-    execute(user) {
+    execute() {
       return user;
     }
   }
