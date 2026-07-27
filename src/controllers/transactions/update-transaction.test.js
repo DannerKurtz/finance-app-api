@@ -1,17 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { jest } from '@jest/globals';
+import { transaction } from '../../tests';
 import { UpdateTransactionController } from './update-transaction';
 describe('Update Transaction Controller', () => {
   class UpdateTransactionUseCaseStub {
     async execute() {
-      return {
-        id: faker.string.uuid(),
-        userId: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        date: faker.date.anytime().toISOString(),
-        type: 'EXPENSE',
-        amount: Number(faker.finance.amount()),
-      };
+      return transaction;
     }
   }
 
