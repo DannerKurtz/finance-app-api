@@ -20,6 +20,7 @@ const config = {
   modulePathIgnorePatterns: ['/postgres_data/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
   globalSetup: '<rootDir>/jest.global-setup.mjs',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.js'],
 };
 
 export default config;
