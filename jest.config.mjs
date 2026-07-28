@@ -19,6 +19,7 @@ const config = {
   watchPathIgnorePatterns: ['<rootDir>/postgres_data'],
   modulePathIgnorePatterns: ['/postgres_data/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
+  globalSetup: '<rootDir>/jest.global-setup.mjs',
 };
 
 export default config;
