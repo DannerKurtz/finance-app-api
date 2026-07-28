@@ -1,3 +1,5 @@
+import { jest } from '@jest/globals';
+import { prisma } from '../../../../prisma/prisma';
 import { user } from '../../../tests';
 import { PostgresCreateUserRepository } from './create-user';
 
@@ -14,5 +16,17 @@ describe('CreateUserRepository', () => {
     expect(result.email).toBe(user.email);
 
     expect(result).toBeTruthy();
+  });
+
+  it('should call Prisma with correct values', async () => {
+    const sut = new PostgresCreateUserRepository();
+
+    const createSpy = jest.spyOn(prisma.user, 'create');
+
+    await sut.execute(user);
+
+    expect(createSpy).toHaveBeenCalledWith({
+      data: user,
+    });
   });
 });
