@@ -2,6 +2,7 @@ node_modules
 .postgres
 postgres_data
 .env
+.env.test
 .vscode
 /src/generated/prisma
 coverage

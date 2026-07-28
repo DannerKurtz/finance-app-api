@@ -16,7 +16,7 @@ const config = {
   },
   transform: {},
   testPathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
-  watchPathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
+  watchPathIgnorePatterns: ['<rootDir>/postgres_data'],
   modulePathIgnorePatterns: ['/postgres_data/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/postgres_data/'],
 };
