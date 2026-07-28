@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { prisma } from '../../../../prisma/prisma';
 import { user } from '../../../tests';
 import { PostgresDeleteUserRepository } from './delete-user';
@@ -19,5 +20,18 @@ describe('PostgresDeleteUserRepository', () => {
     expect(result.email).toBe(createUser.email);
 
     expect(result).toBeTruthy();
+  });
+
+  it('should call Prisma with correct values', async () => {
+    const sut = new PostgresDeleteUserRepository();
+
+    jest.spyOn(prisma.user, 'delete').mockResolvedValue(user.id);
+    const deleteSpy = jest.spyOn(prisma.user, 'delete');
+
+    await sut.execute(user.id);
+
+    expect(deleteSpy).toHaveBeenCalledWith({
+      where: { id: user.id },
+    });
   });
 });
