@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import { prisma } from '../../../../prisma/prisma';
+import { transaction_type } from '../../../generated/prisma';
 import { user as fakerUser } from '../../../tests/';
 import { PostgresGetUserBalanceRepository } from './get-user-balance';
 
@@ -71,7 +72,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakerUser.id,
-        type: 'EARNING',
+        type: transaction_type.EARNING,
       },
       _sum: {
         amount: true,
@@ -80,7 +81,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakerUser.id,
-        type: 'EXPENSE',
+        type: transaction_type.EXPENSE,
       },
       _sum: {
         amount: true,
@@ -89,7 +90,7 @@ describe('PostgresGetUserBalanceRepository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakerUser.id,
-        type: 'INVESTMENT',
+        type: transaction_type.INVESTMENT,
       },
       _sum: {
         amount: true,

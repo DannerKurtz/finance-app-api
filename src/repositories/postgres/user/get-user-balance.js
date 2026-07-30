@@ -1,39 +1,52 @@
-import { prisma } from "../../../../prisma/prisma.js";
-import { Prisma } from "../../../generated/prisma/index.js";
+import { prisma } from '../../../../prisma/prisma.js';
+import { Prisma, transaction_type } from '../../../generated/prisma/index.js';
 
-
-export class PostgresGetUserBalanceRepository{
-  async execute(userId){
-    const {_sum: {amount: totalExpenses}} = await prisma.transaction.aggregate({
+export class PostgresGetUserBalanceRepository {
+  async execute(userId) {
+    const {
+      _sum: { amount: totalExpenses },
+    } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'EXPENSE'
+        type: transaction_type.EXPENSE,
       },
       _sum: {
-        amount: true
-      }
-    })
-    const {_sum: {amount: totalEarnings}} = await prisma.transaction.aggregate({
+        amount: true,
+      },
+    });
+    const {
+      _sum: { amount: totalEarnings },
+    } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'EARNING'
+        type: transaction_type.EARNING,
       },
       _sum: {
-        amount: true
-      }
-    })
+        amount: true,
+      },
+    });
 
-     const {_sum: {amount: totalInvestments}} = await prisma.transaction.aggregate({
+    const {
+      _sum: { amount: totalInvestments },
+    } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'INVESTMENT'
+        type: transaction_type.INVESTMENT,
       },
       _sum: {
-        amount: true
-      }
-    })
-    
-    const balance = (totalEarnings ?? new Prisma.Decimal(0)) - (totalExpenses ?? Prisma.Decimal(0)) - (totalInvestments ?? Prisma.Decimal(0))
-    return { balance: Prisma.Decimal(balance), totalEarnings: totalEarnings ?? Prisma.Decimal(0), totalExpenses: totalExpenses ?? Prisma.Decimal(0), totalInvestments: totalInvestments ?? Prisma.Decimal(0)}
+        amount: true,
+      },
+    });
+
+    const balance =
+      (totalEarnings ?? new Prisma.Decimal(0)) -
+      (totalExpenses ?? Prisma.Decimal(0)) -
+      (totalInvestments ?? Prisma.Decimal(0));
+    return {
+      balance: Prisma.Decimal(balance),
+      totalEarnings: totalEarnings ?? Prisma.Decimal(0),
+      totalExpenses: totalExpenses ?? Prisma.Decimal(0),
+      totalInvestments: totalInvestments ?? Prisma.Decimal(0),
+    };
   }
 }
