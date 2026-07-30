@@ -34,4 +34,13 @@ describe('PostgresDeleteUserRepository', () => {
       where: { id: user.id },
     });
   });
+
+  it('should throw if Prisma throws', async () => {
+    const sut = new PostgresDeleteUserRepository();
+    jest.spyOn(prisma.user, 'delete').mockRejectedValueOnce(new Error());
+
+    const promise = sut.execute(user.id);
+
+    await expect(promise).rejects.toThrow();
+  });
 });
