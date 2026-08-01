@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import dayjs from 'dayjs';
 import { prisma } from '../../../../prisma/prisma';
 import { user as fakerUser, transaction } from '../../../tests';
@@ -17,5 +18,13 @@ describe('PostgresCreateTransactionRepository', () => {
     expect(dayjs(result.date).daysInMonth()).toBe(
       dayjs(transaction.date).daysInMonth(),
     );
+  });
+  it('should throw if Prisma throws', async () => {
+    jest.spyOn(prisma.transaction, 'create').mockRejectedValue(new Error());
+    const sut = new PostgresCreateTransactionRepository();
+
+    const promise = sut.execute();
+
+    await expect(promise).rejects.toThrow();
   });
 });
