@@ -1,18 +1,18 @@
-import { prisma } from "../../../../prisma/prisma.js";
+import { prisma } from '../../../../prisma/prisma.js';
 
 export class PostgresCreateTransactionRepository {
-  async execute(createTransactionParams){
-    const { userId, ...transactionData } = createTransactionParams;
-    
+  async execute(createTransactionParams) {
+    const { user_id, ...transactionData } = createTransactionParams;
+
     return await prisma.transaction.create({
       data: {
         ...transactionData,
         user: {
           connect: {
-            id: userId
-          }
-        }
-      }
-    })
+            id: user_id,
+          },
+        },
+      },
+    });
   }
 }
