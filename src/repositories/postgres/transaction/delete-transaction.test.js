@@ -5,12 +5,12 @@ import { PostgresDeleteTransactionRepository } from './delete-transaction';
 
 describe('PostgresDeleteTransactionRepository', () => {
   it('should delete a transaction', async () => {
-    const { userId, ...transactionData } = transaction;
+    const { user_id, ...transactionData } = transaction;
     const user = await prisma.user.create({
-      data: { ...fakerUser, id: userId },
+      data: { ...fakerUser, id: user_id },
     });
     const transactionToDelete = await prisma.transaction.create({
-      data: { ...transactionData, user: { connect: { id: user.id } } },
+      data: { ...transactionData, user_id: user.id },
     });
     const sut = new PostgresDeleteTransactionRepository();
 
