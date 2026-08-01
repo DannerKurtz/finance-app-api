@@ -8,7 +8,7 @@ describe('PostgresCreateTransactionRepository', () => {
     const user = await prisma.user.create({ data: fakerUser });
     const sut = new PostgresCreateTransactionRepository();
 
-    const result = await sut.execute({ ...transaction, userId: user.id });
+    const result = await sut.execute({ ...transaction, user_id: user.id });
 
     expect(result.name).toBe(transaction.name);
     expect(result.amount.toString()).toBe(transaction.amount.toString());
