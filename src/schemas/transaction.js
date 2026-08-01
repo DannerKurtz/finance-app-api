@@ -2,7 +2,7 @@ import validator from 'validator';
 import z from 'zod';
 
 export const createTransactionSchema = z.object({
-  userId: z
+  user_id: z
     .string({
       required_error: 'User ID is required.',
     })
@@ -46,4 +46,4 @@ export const updateTransactionSchema = createTransactionSchema
   .strict({
     message: 'Some provided field is not allowed',
   })
-  .omit({ userId: true });
+  .omit({ user_id: true });
