@@ -62,7 +62,7 @@ describe('CreateTransactionUseCase', () => {
     await sut.execute(createTransactionParams);
     // Assert
     expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(
-      createTransactionParams.userId,
+      createTransactionParams.user_id,
     );
   });
 
