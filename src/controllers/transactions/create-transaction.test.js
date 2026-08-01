@@ -18,7 +18,7 @@ describe('Create Transaction Controller', () => {
 
   const baseHttpRequest = {
     body: {
-      userId: faker.string.uuid(),
+      user_id: faker.string.uuid(),
       name: faker.commerce.productName(),
       date: faker.date.anytime().toISOString(),
       type: 'EXPENSE',
@@ -37,7 +37,7 @@ describe('Create Transaction Controller', () => {
     expect(response.statusCode).toBe(201);
   });
 
-  it('should return 400 when missing userId', async () => {
+  it('should return 400 when missing user_id', async () => {
     //arrange
     const { sut } = makeSut();
 
@@ -45,7 +45,7 @@ describe('Create Transaction Controller', () => {
     const result = await sut.execute({
       body: {
         ...baseHttpRequest,
-        userId: undefined,
+        user_id: undefined,
       },
     });
 
