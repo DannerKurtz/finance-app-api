@@ -11,11 +11,11 @@ export class CreateTransactionUseCase {
     this.idGeneratorAdapter = idGeneratorAdapter;
   }
   async execute(createTransactionParams) {
-    const { userId } = createTransactionParams;
+    const { user_id } = createTransactionParams;
 
-    const user = await this.getUserByIdRepository.execute(userId);
+    const user = await this.getUserByIdRepository.execute(user_id);
     if (!user) {
-      throw UserNotFoundError(userId);
+      throw UserNotFoundError(user_id);
     }
 
     const transactionId = this.idGeneratorAdapter.execute();
