@@ -5,7 +5,7 @@ import {
   makeGetUserBalanceController,
   makeGetUserByIdController,
   makeUpdateUserController,
-} from '../factory/controller/user';
+} from '../factory/controller/user.js';
 
 export const usersRouter = Router();
 usersRouter.post('/', async (req, res) => {
