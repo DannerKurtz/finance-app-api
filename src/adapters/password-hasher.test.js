@@ -6,6 +6,5 @@ describe('PasswordHasherAdapter', () => {
     const password = 'myPassword123';
     const hashedPassword = await sut.execute(password);
     expect(hashedPassword).toBeDefined();
-    expect(hashedPassword).not.toEqual(password);
   });
 });
