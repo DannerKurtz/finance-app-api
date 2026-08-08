@@ -48,17 +48,17 @@ describe('GetUserBalanceUseCase', () => {
   });
 
   it('should throw UserNotFoundError if GetUserByIdRepository returns null', async () => {
-    //arrange
     const { sut, getUserByIdRepository } = makeSut();
+    const userId = faker.string.uuid();
+
     jest.spyOn(getUserByIdRepository, 'execute').mockResolvedValue(null);
-    //act
-    const promise = sut.execute(faker.string.uuid());
-    //assert
-    await expect(promise).rejects.toThrow(new UserNotFoundError());
+
+    const promise = sut.execute(userId);
+
+    await expect(promise).rejects.toThrow(new UserNotFoundError(userId));
   });
 
   it('should call GetUserByIdRepository with correct values', async () => {
-    //arrange
     const { sut, getUserByIdRepository } = makeSut();
     const userId = faker.string.uuid();
     const getUserByIdRepositorySpy = jest.spyOn(
@@ -66,13 +66,12 @@ describe('GetUserBalanceUseCase', () => {
       'execute',
     );
     //act
-    await sut.execute({ userId });
+    await sut.execute(userId);
     //assert
     expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId);
   });
 
   it('should call GetUserBalanceRepository with correct values', async () => {
-    //arrange
     const { sut, getUserBalanceRepository } = makeSut();
     const userId = faker.string.uuid();
     const getUserBalanceRepositorySpy = jest.spyOn(
@@ -80,13 +79,12 @@ describe('GetUserBalanceUseCase', () => {
       'execute',
     );
     //act
-    await sut.execute({ userId });
+    await sut.execute(userId);
     //assert
     expect(getUserBalanceRepositorySpy).toHaveBeenCalledWith(userId);
   });
 
   it('should throw if GetUserByIdRepository throws', async () => {
-    //arrange
     const { sut, getUserByIdRepository } = makeSut();
     jest.spyOn(getUserByIdRepository, 'execute').mockRejectedValue(new Error());
     //act
@@ -96,7 +94,6 @@ describe('GetUserBalanceUseCase', () => {
   });
 
   it('should throw if GetUserBalanceRepository throws', async () => {
-    //arrange
     const { sut, getUserBalanceRepository } = makeSut();
     jest
       .spyOn(getUserBalanceRepository, 'execute')
