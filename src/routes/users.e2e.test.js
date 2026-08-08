@@ -45,4 +45,18 @@ describe('User Routes E2E Tests', () => {
 
     expect(response.status).toBe(200);
   });
+
+  it('DELETE /api/:userId should return 200 when user deleted', async () => {
+    const { id, ...fakerUser } = user;
+    const createdUser = await request(app)
+      .post('/api/users')
+      .send({
+        ...fakerUser,
+      });
+    const response = await request(app).delete(
+      `/api/users/${createdUser.body.createdUser.id}`,
+    );
+
+    expect(response.status).toBe(200);
+  });
 });
