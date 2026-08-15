@@ -42,4 +42,26 @@ describe('Transactions E2E Test', () => {
 
     expect(response.status).toBe(200);
   });
+
+  it('DELETE /transactions should return 201 when transaction is created', async () => {
+    const createUserResponse = await request(app)
+      .post('/api/users')
+      .send({
+        ...user,
+        id: undefined,
+      });
+    const createTransactionResponse = await request(app)
+      .post('/api/transactions')
+      .send({
+        ...transaction,
+        id: undefined,
+        user_id: createUserResponse.body.createdUser.id,
+      });
+
+    const response = await request(app).delete(
+      `/api/transactions/${createTransactionResponse.body.transaction.id}`,
+    );
+
+    expect(response.status).toBe(200);
+  });
 });
