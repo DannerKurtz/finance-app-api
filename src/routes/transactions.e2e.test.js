@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import request from 'supertest';
 import { app } from '../app.js';
 import { transaction, user } from '../tests/index.js';
@@ -61,6 +62,35 @@ describe('Transactions E2E Test', () => {
     const response = await request(app).delete(
       `/api/transactions/${createTransactionResponse.body.transaction.id}`,
     );
+
+    expect(response.status).toBe(200);
+  });
+
+  it('PATH /transactions should return 200 when transaction is created', async () => {
+    const createUserResponse = await request(app)
+      .post('/api/users')
+      .send({
+        ...user,
+        id: undefined,
+      });
+
+    const createTransactionResponse = await request(app)
+      .post('/api/transactions')
+      .send({
+        ...transaction,
+        id: undefined,
+        user_id: createUserResponse.body.createdUser.id,
+      });
+
+    const response = await request(app)
+      .patch(
+        `/api/transactions/${createTransactionResponse.body.transaction.id}`,
+      )
+      .send({
+        name: faker.commerce.productName(),
+        amount: Number(faker.commerce.price()),
+        type: 'EARNING',
+      });
 
     expect(response.status).toBe(200);
   });
