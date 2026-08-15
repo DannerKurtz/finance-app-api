@@ -22,7 +22,7 @@ describe('Transactions E2E Test', () => {
     expect(response.status).toBe(201);
   });
 
-  it('GET /transactions should return 201 when transaction is created', async () => {
+  it('GET /transactions should return 200 when transaction is created', async () => {
     const createUserResponse = await request(app)
       .post('/api/users')
       .send({
@@ -44,7 +44,7 @@ describe('Transactions E2E Test', () => {
     expect(response.status).toBe(200);
   });
 
-  it('DELETE /transactions should return 201 when transaction is created', async () => {
+  it('DELETE /transactions should return 200 when transaction is created', async () => {
     const createUserResponse = await request(app)
       .post('/api/users')
       .send({
