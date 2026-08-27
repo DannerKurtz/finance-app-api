@@ -138,6 +138,43 @@
           }
         }
       }
+    },
+    "/api/users/{userId}/balance": {
+      "get": {
+        "summary": "Get user balance by ID",
+        "description": "Retrieves a user's balance details by their unique ID",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User balance retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBalance"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -188,6 +225,28 @@
           "password": {
             "type": "string",
             "example": "password"
+          }
+        }
+      },
+      "UserBalance": {
+        "type": "object",
+        "properties": {
+          "earnings": {
+            "type": "number",
+            "example": "1000"
+          },
+          "expenses": {
+            "type": "number",
+            "example": "500"
+          },
+          "investments": {
+            "type": "number",
+            "example": "200"
+          },
+          "balance": {
+            "type": "number",
+            "format": "float",
+            "example": 1000.5
           }
         }
       }
