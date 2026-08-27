@@ -8,13 +8,14 @@
     "/api/users": {
       "post": {
         "summary": "Create a new user",
-        "tags": ["Users"],
+        "description": "Creates a new user with the provided details",
+        "tags": ["CreateUserParams"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/CreateUserParams"
               }
             }
           }
@@ -35,6 +36,28 @@
   },
   "components": {
     "schemas": {
+      "CreateUserParams": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
       "User": {
         "type": "object",
         "properties": {
