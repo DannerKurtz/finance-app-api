@@ -9,7 +9,7 @@
       "post": {
         "summary": "Create a new user",
         "description": "Creates a new user with the provided details",
-        "tags": ["CreateUserParams"],
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -26,6 +26,43 @@
           },
           "400": {
             "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "summary": "Get user by ID",
+        "description": "Retrieves a user by their unique ID",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
           },
           "500": {
             "description": "Internal server error"
