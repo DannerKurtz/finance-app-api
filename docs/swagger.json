@@ -186,7 +186,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Transactions"
+                "$ref": "#/components/schemas/TransactionsParams"
               }
             }
           }
@@ -203,11 +203,51 @@
           }
         }
       }
+    },
+    "/api/transactions?userId={userId}": {
+      "get": {
+        "summary": "Get transactions by user ID",
+        "description": "Retrieves transactions by user ID",
+        "tags": ["Transactions"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transactions"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "CreateUserParams": {
+      "UserParams": {
         "type": "object",
         "properties": {
           "first_name": {
@@ -275,6 +315,34 @@
             "type": "number",
             "format": "float",
             "example": 1000.5
+          }
+        }
+      },
+      "TransactionsParams": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Salary for June"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100.5
+          },
+          "type": {
+            "type": "string",
+            "enum": ["EARNING", "EXPENSE", "INVESTMENT"],
+            "example": "EARNING"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-06-01T10:00:00Z"
           }
         }
       },
