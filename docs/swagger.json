@@ -243,6 +243,49 @@
           }
         }
       }
+    },
+    "/api/transactions/{transactionId}": {
+      "patch": {
+        "summary": "Update transaction by user ID",
+        "description": "Updates a transaction details by their unique ID",
+        "tags": ["Transactions"],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the transaction"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionsParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transactions updated successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Transactions not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -326,6 +369,29 @@
             "format": "uuid",
             "example": "123e4567-e89b-12d3-a456-426614174000"
           },
+          "name": {
+            "type": "string",
+            "example": "Salary for June"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100.5
+          },
+          "type": {
+            "type": "string",
+            "enum": ["EARNING", "EXPENSE", "INVESTMENT"],
+            "example": "EARNING"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-06-01T10:00:00Z"
+          }
+        }
+      },
+      "UpdateTransactionsParams": {
+        "type": "object",
+        "properties": {
           "name": {
             "type": "string",
             "example": "Salary for June"
