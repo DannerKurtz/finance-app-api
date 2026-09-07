@@ -43,7 +43,6 @@ jobs:
         uses: skiddph/actions-env@v1.0.3
         with:
           file: .env
-          prefix: 'ENV_'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Prisma Migrate
