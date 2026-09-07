@@ -1,4 +1,4 @@
-import { prisma } from "../../../../prisma/prisma.js";
+import { prisma } from '../../../../prisma/prisma.js';
 
 export class PostgresDeleteUserRepository {
   async execute(id) {
@@ -6,5 +6,4 @@ export class PostgresDeleteUserRepository {
       where: { id },
     });
   }
-  
 }

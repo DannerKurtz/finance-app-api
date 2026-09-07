@@ -1,11 +1,11 @@
-import { prisma } from "../../../../prisma/prisma.js";
+import { prisma } from '../../../../prisma/prisma.js';
 
-export class PostgresGetTransactionsByUserIdRepository{
-  async execute(userId){
+export class PostgresGetTransactionsByUserIdRepository {
+  async execute(userId) {
     return prisma.transaction.findMany({
       where: {
-        user_id: userId
-      }
-    }) 
+        user_id: userId,
+      },
+    });
   }
 }

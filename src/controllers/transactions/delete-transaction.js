@@ -1,15 +1,20 @@
-import { internalServer, notFound, ok } from "../../controllers/helpers/index.js";
+import {
+  internalServer,
+  notFound,
+  ok,
+} from '../../controllers/helpers/index.js';
 
-export class DeleteTransactionController{
-  constructor(deleteTransactionUseCase){
+export class DeleteTransactionController {
+  constructor(deleteTransactionUseCase) {
     this.deleteTransactionUseCase = deleteTransactionUseCase;
   }
-  async execute(httpRequest){
+  async execute(httpRequest) {
     try {
       const transactionId = httpRequest.params.transactionId;
-      const deletedTransaction = await this.deleteTransactionUseCase.execute(transactionId);
-      if (!deletedTransaction){
-        return notFound({message: 'Transaction not found.'});
+      const deletedTransaction =
+        await this.deleteTransactionUseCase.execute(transactionId);
+      if (!deletedTransaction) {
+        return notFound({ message: 'Transaction not found.' });
       }
       return ok(deletedTransaction);
     } catch (error) {
@@ -17,5 +22,4 @@ export class DeleteTransactionController{
       return internalServer();
     }
   }
-
 }

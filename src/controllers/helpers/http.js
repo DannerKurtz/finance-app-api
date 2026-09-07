@@ -1,4 +1,3 @@
-
 export const badRequest = (body) => ({
   statusCode: 400,
   body,
