@@ -6,10 +6,23 @@ import globals from 'globals';
 
 export default defineConfig([
   {
+    ignores: ['src/generated/**', 'coverage/**', 'node_modules/**'],
+  },
+  {
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended', eslintConfigPrettier],
     languageOptions: { globals: globals.node },
+    rules: {
+      'no-unused-vars': [
+        'error',
+        {
+          ignoreRestSiblings: true,
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
   },
   {
     files: ['**/*.jsonc'],
