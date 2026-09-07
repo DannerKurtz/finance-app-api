@@ -39,11 +39,7 @@ jobs:
           node-version: 22
       - name: Install Dependencies
         run: npm install
-      - name: Create .env file
-        uses: skiddph/actions-env@v1.0.3
-        with:
-          file: .env
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - name: Prisma Migrate
         run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
