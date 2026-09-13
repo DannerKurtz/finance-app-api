@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start:dev": "node --watch ./src/index.js ",
+    "start": "node ./src/index.js ",
     "migration:run": "node ./src/database/postgres/migrations/exec.js",
     "test:watch": "npm run test -- 'NODE_OPTIONS=' --watch' ",
     "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' dotenv -e .env.test -- jest --silent --runInBand",
