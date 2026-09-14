@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "postinstall": "prisma generate",
     "start:dev": "node --watch ./src/index.js ",
     "start": "node ./src/index.js ",
     "migration:run": "node ./src/database/postgres/migrations/exec.js",
